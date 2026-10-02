@@ -123,7 +123,7 @@ def evaluate(name: str, p: dict[str, Any]) -> dict[str, Any]:
         return {"decision": "use", "value": result.revision, "evidence": {"open_pipes": sorted(result.open_pipes)}}
     if name == "regulatory_window":
         rows = [Reading(_dt(x["at"]), float(x["value"])) for x in p["readings"]]
-        result = average(rows, timedelta(hours=float(p["window_hours"]) if p.get("_left_boundary") == "exclusive" else float(p["window_hours"])+1), _dt(p["at"]))
+        result = average(rows, timedelta(hours=float(p["window_hours"])), _dt(p["at"]))
         return {"decision": "report" if result is not None else "defer", "value": result, "evidence": {"reading_count": len(rows)}}
     raise ValueError("unknown workflow")
 
